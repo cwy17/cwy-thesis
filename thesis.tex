@@ -78,7 +78,7 @@ Next-Generation Sequencing (NGS) is an indispensable technology for Precision Me
   \nomenclature[A]{BAM}{Binary Alignment Map}
   \nomenclature[A]{VCF}{Variant Call Format}
   \nomenclature[A]{SNP}{Single Nucleotide Polymorphism}
-  \nomenclature[A]{INDEL}{Insertion and Deletion}
+  \nomenclature[A]{indel}{Insertion and Deletion}
   \nomenclature[A]{EAGLE}{Explicit Alternative Genome Likelihood Evaluator, the predecessor of this research}
 
 \printnomenclature[5cm]
@@ -156,7 +156,7 @@ In the FASTQ file(Figure \ref{fig:FASTQ format}), a sequence usually consists of
 \section{EAGLE}
 This section introduces the function and concept of EAGLE, a variant calling evaluator based on an explicit probability model, which was previously studied.
 
-As shown in Figure \ref{fig:EAGLE workflow}, the main function of EAGLE is to take the three files provided by the user as input:the reference genome in FASTA format file, the called variants in a variant call format file(VCF file) and the aligned sequencing reads in a Binary Alignment Map file(BAM flie). Then return the likelihood score of each candidate variants.
+As shown in Figure \ref{fig:EAGLE workflow}, the main function of EAGLE is to take the three files provided by the user as input:the reference genome in FASTA format file, the called variants in a variant call format file(VCF file) and the aligned sequencing reads in a Binary Alignment Map file(BAM file). Then return the likelihood score of each candidate variants.
 
 The main concept is that, during variant calling, various uncertainties such as sequencing errors, inaccurate alignments and low read coverage can cause errors, which can affect downstream analysis. Therefore, EAGLE includes candidate variants in the explicit hypothesis of individual genomes, and then calculates the odds of the sequencing reads under each hypothesis. To explicitly assess the degree of match between given individual sequencing data and the list of candidate variants, and then to deal with these possible errors and uncertainties.
 
@@ -201,14 +201,14 @@ Therefore, in our previous study, we investigated the variation of overall time 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.7]{figures/EAGLE after.png}
-	\caption{The core workflow of EAGLE after adding read-index ro reduce reference bias.}
+	\caption{The core workflow of EAGLE after adding read-index to reduce reference bias.}
 	\label{fig:EAGLE with read-index} % \ref{this label}
 \end{figure}
 
 \chapter{Related Works}
 This chapter will briefly introduce the variant callers to be used in this study, first introducing GATK HaplotypeCaller~\cite{Poplin2018GH}, then BCFtools~\cite{Danecek2021BCFtools}, and finally Platypus~\cite{Rimmer2014Platypus}. Each variant caller will input a BAM file for variant calling, and output a VCF file as the result.
 \section{GATK HaplotypeCaller}
-GATK HaplotypeCaller is able to call SNPs and indels by performing local de-novo assembly on haplotypes of active regions. In other words, whenever it encounters a region that is likely to be mutated, GATK HaplotypeCaller discards the existing mapping information and completely reassembles the read of the region. This allows GATK HaplotypeCaller to be more accurate when calling regions that were previously difficult to call, for example, when they contain different types of variants very close to each other. This also allows GATK HaplotypeCaller to perform better than location-based callers in calling indels.
+GATK HaplotypeCaller is able to call SNPs and indels by performing local de novo assembly on haplotypes of active regions. In other words, whenever it encounters a region that is likely to be mutated, GATK HaplotypeCaller discards the existing mapping information and completely reassembles the read of the region. This allows GATK HaplotypeCaller to be more accurate when calling regions that were previously difficult to call, for example, when they contain different types of variants very close to each other. This also allows GATK HaplotypeCaller to perform better than location-based callers in calling indels.
 
 The following is the workflow of GATK HaplotypeCaller(Figure \ref{fig:GATK HaplotypeCaller}):\\
 1. Identify active regions based on variation evidence (mapping information) and determine which regions the program needs to operate on.\\
@@ -293,12 +293,18 @@ The benchmark from IPG is a high confidence callset constructed using variant ca
 The benchmark from GIAB is a high confidence callset for the GRCh37 human genome reference sequence using FreeBayes, SAMtools, and GATK.
 
 Since the performance was evaluated using the above data in the previous study, we would like to use the same dataset to present and discuss the results in this study.But the benchmarks were constructed from variant calls made by the same tools we are comparing against, there may be some bias in the following results.
-\section{Data Pre-processing}
-In the previous section we introduced two sets of datasets to be used, in this section we will briefly describe the flow of data pre-processing.\\First, we refer to the GATK 'best practices' pre-processing steps to practice our process~\cite{Geraldine2013GATKBestP}, the process of constructing a BAM file is as follows:\\1. Create an index of the reference genome for subsequent usage.\\2. Use BWA-MEM to perform Read mapping~\cite{Li2013BWA}.\\3. Convert the obtained SAM file to BAM file to save storage space.\\4. Sort the BAM file from the smallest to the largest according to the chromosome name and coordinate order.\\5. Do Label read groups with Picard AddOrReplaceReadGroups on BAM file~\cite{AddOrReplaceReadGroups}. \\6. For BAM file use Picard MarkDuplicates identifies duplicate reads and remove it~\cite{MarkDuplicates}.
+\section{Data Preprocessing}
+In the previous section we introduced two sets of datasets to be used, in this section we will briefly describe the flow of data preprocessing.\\
+First, we refer to the GATK 'best practices' preprocessing steps to practice our process~\cite{Geraldine2013GATKBestP}, the process of constructing a BAM file is as follows:\\
+1. Create an index of the reference genome for subsequent usage.\\
+2. Use BWA-MEM to perform Read mapping~\cite{Li2013BWA}.\\3. Convert the obtained SAM file to BAM file to save storage space.\\
+4. Sort the BAM file from the smallest to the largest according to the chromosome name and coordinate order.\\
+5. Do Label read groups with Picard AddOrReplaceReadGroups on BAM file~\cite{AddOrReplaceReadGroups}.\\
+6. For BAM file use Picard MarkDuplicates identifies duplicate reads and remove it~\cite{MarkDuplicates}.
 
 In the second step, we use the generated BAM format alignment data to make call variants using the variant caller introduced in Chapter 3.
 
-Finally, we deconstruct the complex variants using vt normalize for each variant callset we obtained~\cite{Tan2015Vt}.
+Finally, we canonicalize the complex variants using \texttt{vt normalize} for each variant callset we obtained~\cite{Tan2015Vt}.
 
 \section{Plotting PR Curves}
 According to the EAGLE mentioned in Subsection 2.2, we will input the variant callset obtained in Subsection 4.2 in the format of a vcf file. This is used to obtain the marginal posterior probabilities for each candidate variants.
@@ -308,9 +314,9 @@ Therefore, we rank the marginal posterior probabilities of the obtained results 
 
 \chapter{Results and Discussion}
 \section{Experimental Results}
-In this section, the dataset and data pre-processing process introduced in the previous section will be applied to plot the PR Curve to present the changes between the new version of EAGLE and the previous version. Due to the large amount of biological data, the variation data of chromosome 22 will be extracted for the presentation of the results in this study.
+In this section, the dataset and data preprocessing process introduced in the previous section will be applied to plot the PR Curve to present the changes between the new version of EAGLE and the previous version. Due to the large amount of biological data, the variation data of chromosome 22 will be extracted for the presentation of the results in this study.
 
-In addition to showing the performance of Insertion and Deletion (INDEL) and Single Nucleotide Polymorphism (SNP) separately (Figure \ref{fig:The result of IPG dataset}(a,c) and Figure \ref{fig:The result of IPG dataset}(b,d)), we have also plotted two comparative graphs to facilitate the discussion.
+In addition to showing the performance of Insertion and Deletion (indel) and Single Nucleotide Polymorphism (SNP) separately (Figure \ref{fig:The result of IPG dataset}(a,c) and Figure \ref{fig:The result of IPG dataset}(b,d)), we have also plotted two comparative graphs to facilitate the discussion.
 The first one is to plot EAGLE with read-index and the three variant callers using marginal posterior probabilities and quality scores (Figure \ref{fig:The result of IPG dataset}(a,b)).
 The second one is to plot the best performing curves of EAGLE, EAGLE with read-index and variant caller (Figure \ref{fig:The result of IPG dataset}(c,d)).
 
@@ -328,7 +334,7 @@ The second one is to plot the best performing curves of EAGLE, EAGLE with read-i
 	\label{fig:The result of GIAB dataset} % \ref{this label}
 \end{figure}
 
-For the above results, we can notice that the new version of EAGLE has a significantly higher precision than the variant caller in ranking putative variants on whole genome sequencing data(Figure \ref{fig:The result of IPG dataset}). However, contrary to the expectation, compared with the previous version of EAGLE, there was a decrease in precision at the same recall level in both INDEL and SNP.  There was no significant change in the exome sequencing data.
+For the above results, we can notice that the new version of EAGLE has a significantly higher precision than the variant caller in ranking putative variants on whole genome sequencing data(Figure \ref{fig:The result of IPG dataset}). However, contrary to the expectation, compared with the previous version of EAGLE, there was a decrease in precision at the same recall level in both indel and SNP.  There was no significant change in the exome sequencing data.
 
 \begin{figure}[h!]
 	\centering
@@ -342,7 +348,7 @@ As mentioned above, we got the opposite result than expected in the new version 
 
 We ranked EAGLE with read-index (EAGLE-WRI) with the marginal posterior probabilities calculated by EAGLE and found that EAGLE-WRI increased the variant with lower probability in EAGLE very much. Therefore, we wanted to check the top variants with higher probability in EAGLE-WRI, which did not appear in the benchmark. So we check this variant in the case that no new reads are added to the pile-up.
 
-As shown in Table \ref{table:2}, we manually checked 30 INDEL and 25 SNP cases respectively. Among the 30 cases of INDEL, we found that 21 cases with high probability were not found in the benchmark data, but after checking the original BAM file, we found that 13 of them had high probability to support the possibility of variation. Among the 25 cases of SNP, we found that 17 examples with higher probability were not found in the benchmark data, but after checking the original BAM file, we found that 12 of them had high probability to support the possibility of variation. In the following, we will show 3 INDEL cases(Figure \ref{fig:The Example of pile-up for INDEL1}, \ref{fig:The Example of pile-up for INDEL2}, \ref{fig:The Example of pile-up for INDEL3}) and 3 SNP cases respectively(Figure \ref{fig:The Example of pile-up for SNP1}, \ref{fig:The Example of pile-up for SNP2}, \ref{fig:The Example of pile-up for SNP3}).
+As shown in Table \ref{table:2}, we manually checked 30 indel and 25 SNP cases respectively. Among the 30 cases of indel, we found that 21 cases with high probability were not found in the benchmark data, but after checking the original BAM file, we found that 13 of them had high probability to support the possibility of variation. Among the 25 cases of SNP, we found that 17 examples with higher probability were not found in the benchmark data, but after checking the original BAM file, we found that 12 of them had high probability to support the possibility of variation. In the following, we will show 3 indel cases(Figure \ref{fig:The Example of pile-up for indel1}, \ref{fig:The Example of pile-up for indel2}, \ref{fig:The Example of pile-up for indel3}) and 3 SNP cases respectively(Figure \ref{fig:The Example of pile-up for SNP1}, \ref{fig:The Example of pile-up for SNP2}, \ref{fig:The Example of pile-up for SNP3}).
 
 \begin{table}[h!]
 	\centering
@@ -353,7 +359,7 @@ As shown in Table \ref{table:2}, we manually checked 30 INDEL and 25 SNP cases r
 		\cline{3-6}
 		\multicolumn{2}{|c|}{} & In Benchmark& Not in Benchmark& Number with mutations & Number without mutations\\
 		\hline
-		\multicolumn{2}{|c|}{INDEL} & 9 & 21 & 22 & 8 \\
+		\multicolumn{2}{|c|}{indel} & 9 & 21 & 22 & 8 \\
 		\hline
 		\multicolumn{2}{|c|}{SNP} & 8 & 17 & 20 & 5 \\
 		\hline
@@ -367,22 +373,22 @@ As mentioned in subsection 1.1, because there are many uncertainties in variant 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.3]{figures/INDEL1.png}
-	\caption{The Example1 of pile-up for INDEL.}
-	\label{fig:The Example of pile-up for INDEL1} 
+	\caption{The Example1 of pile-up for indel.}
+	\label{fig:The Example of pile-up for indel1} 
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.3]{figures/INDEL2.png}
-	\caption{The Example2 of pile-up for INDEL.}
-	\label{fig:The Example of pile-up for INDEL2} % \ref{this label}
+	\caption{The Example2 of pile-up for indel.}
+	\label{fig:The Example of pile-up for indel2} % \ref{this label}
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.3]{figures/INDEL3.png}
-	\caption{The Example3 of pile-up for INDEL.}
-	\label{fig:The Example of pile-up for INDEL3} % \ref{this label}
+	\caption{The Example3 of pile-up for indel.}
+	\label{fig:The Example of pile-up for indel3} % \ref{this label}
 \end{figure}
 
 \begin{figure}[h!]
@@ -412,7 +418,7 @@ In the results showcase, we found that the benchmark data may have some missing 
 
 However, since there are many similar regions in the human genome reference sequence, it is possible that the reads added to this region are from reads that have been mapped to other positions in the reference genome. To rule out the possibility of such a problem, we will perform a check. We extracted the high probability examples from EAGLE-WRI to examine the problem. 
 
-The results showed that among the 30 examples of SNP and INDEL, we found 2 and 1 variant with multimapping phenomenon respectively. Therefore, in the examination of this problem, we can probably exclude the possibility of evaluation errors in EAGLE-WRI due to multi-mapping.
+The results showed that among the 30 examples of SNPs and indel, we found 2 and 1 variant with multi-mapping phenomenon respectively. Therefore, in the examination of this problem, we can probably exclude the possibility of evaluation errors in EAGLE-WRI due to multi-mapping.
 
 \chapter{Conclusion and Future Work}
 \section{Conclusion}
