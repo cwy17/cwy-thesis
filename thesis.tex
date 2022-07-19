@@ -327,15 +327,15 @@ The second one is to plot the best performing curves of EAGLE, EAGLE with read-i
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.45]{figures/IPG result.png}
-	\caption{The use of precision and recall for NA12878 comes from the whole genome sequencing data in Illumina Platinum Genome’s benchmark.}
-	\label{fig:The result of IPG dataset} % \ref{this label}
+	\caption{Precision and recall for NA12878 for whole genome sequencing data in Illumina Platinum Genome benchmark.}
+	\label{fig:The result of IPG dataset}
 \end{figure}
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=0.45]{figures/GIAB result.png}
-	\caption{The use of precision and recall for NA12878 Genome-In-A-Bottle’s benchmark.}
-	\label{fig:The result of GIAB dataset} % \ref{this label}
+	\caption{Precision and recall for the NA12878 Genome-In-A-Bottle benchmark.}
+	\label{fig:The result of GIAB dataset}
 \end{figure}
 
 For the above results, we can notice that the new version of EAGLE has a significantly higher precision than the variant caller in ranking putative variants on whole genome sequencing data(Figure \ref{fig:The result of IPG dataset}). However, contrary to the expectation, compared with the previous version of EAGLE, there was a decrease in precision at the same recall level in both indel and SNP.  There was no significant change in the exome sequencing data.
@@ -344,7 +344,7 @@ For the above results, we can notice that the new version of EAGLE has a signifi
 	\centering
 	\includegraphics[scale=0.3]{figures/Pileup.png}
 	\caption{Example for pile-up.}
-	\label{fig:Example for pile-up} % \ref{this label}
+	\label{fig:Example for pile-up}
 \end{figure}
 
 \section{Checking the pile-up}
@@ -352,18 +352,18 @@ As mentioned above, we got the opposite result than expected in the new version 
 
 We ranked EAGLE with read-index (EAGLE-WRI) with the marginal posterior probabilities calculated by EAGLE and found that EAGLE-WRI increased the variant with lower probability in EAGLE very much. Therefore, we wanted to check the top variants with higher probability in EAGLE-WRI, which did not appear in the benchmark. So we check this variant in the case that no new reads are added to the pile-up.
 
-As shown in Table \ref{table:2}, we manually checked 30 indel and 25 SNP cases respectively. Among the 30 cases of indel, we found that 21 cases with high probability were not found in the benchmark data, but after checking the original BAM file, we found that 13 of them had high probability to support the possibility of variation. Among the 25 cases of SNP, we found that 17 examples with higher probability were not found in the benchmark data, but after checking the original BAM file, we found that 12 of them had high probability to support the possibility of variation. In the following, we will show 3 indel cases(Figure \ref{fig:The Example of pile-up for indel1}, \ref{fig:The Example of pile-up for indel2}, \ref{fig:The Example of pile-up for indel3}) and 3 SNP cases respectively(Figure \ref{fig:The Example of pile-up for SNP1}, \ref{fig:The Example of pile-up for SNP2}, \ref{fig:The Example of pile-up for SNP3}).
+As shown in Table \ref{table:2}, we manually checked 30 indel and 25 SNP cases respectively. Among the 30 cases of indel, we found that 21 cases with high probability were not found in the benchmark data, but after checking the original BAM file, we found that 13 of them showed support for the possibility of variation. Among the 25 cases of SNP, we found that 17 examples with higher probability were not found in the benchmark data, but after checking the original BAM file, we found that 12 of them showed support for the possibility of variation. In the following, we will show 3 indel cases(Figure \ref{fig:The Example of pile-up for indel1}, \ref{fig:The Example of pile-up for indel2}, \ref{fig:The Example of pile-up for indel3}) and 3 SNP cases respectively(Figure \ref{fig:The Example of pile-up for SNP1}, \ref{fig:The Example of pile-up for SNP2}, \ref{fig:The Example of pile-up for SNP3}).
 
-As mentioned in subsection 1.1, because there are many uncertainties in variant calling, such as sequencing error, inaccurate alignment, and low read coverage. Therefore, we believe that the degradation of performance may be related to the absence of some variant in the benchmark. 
+As mentioned in subsection 1.1, because there are many uncertainties in variant calling, such as sequencing error, inaccurate alignment, and low read coverage. Therefore, we believe that the degradation of performance may be related to the absence of some variant in the benchmark.
 
 \begin{table}[h!]
 	\centering
 	\scalebox{0.8}{
 	\begin{tabular}{|c|c|c|c|c|c|}
 		\hline
-		\multicolumn{2}{|c|}{\multirow{2}*{\diagbox[innerwidth=2cm]{Type}{State}}}  & \multicolumn{2}{c|}{Before checking} & \multicolumn{2}{c|}{After checking}\\
+		\multicolumn{2}{|c|}{\multirow{2}*{\diagbox[innerwidth=2cm]{Type}{State}}}  & \multicolumn{2}{c|}{Before checking} & \multicolumn{2}{c|}{After manual checking}\\
 		\cline{3-6}
-		\multicolumn{2}{|c|}{} & In Benchmark& Not in Benchmark& Number with mutations & Number without mutations\\
+		\multicolumn{2}{|c|}{} & In Benchmark & Not in Benchmark & Benchmark or Plausible mutations & Appears wrong\\
 		\hline
 		\multicolumn{2}{|c|}{indel} & 9 & 21 & 22 & 8 \\
 		\hline
