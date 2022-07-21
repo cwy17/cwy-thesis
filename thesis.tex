@@ -248,10 +248,10 @@ First, Platypus generates a set of candidate variants according to the algorithm
 Then, the likelihood of haplotype was calculated, that is, given the probability of the haplotype read: $p(r|h)$, where r and h denote read and haplotype, respectively. After calculating $p(r|h)$ for all combinations of reads and haplotypes, the Expectation-Maximization (EM) algorithm was used to estimate the probability of each haplotype under the diploid genotype model.
 
 \begin{equation}
-  L(R|\{ {h_i,f_i} \}) = \prod_{sample \hspace{0.5mm} s}\sum_{haplotypes \hspace{0.75mm} i,j} {f_if_j} \prod_{reads \hspace{0.5mm} r \in R_s} (\frac{1}{2}p(r|h_i) + \frac{1}{2} p(r|h_j))
+  L(R|\{ {h_i,f_i} \}) = \prod_{\text{sample} \hspace{0.5mm} s}\sum_{\text{haplotypes} \hspace{0.75mm} i,j} {f_if_j} \prod_{\text{reads} \hspace{0.5mm} r \in R_s} (\frac{1}{2}p(r|h_i) + \frac{1}{2} p(r|h_j))
 \end{equation}
 
-Here, $f_i$ denotes the frequency of \hspace{0.05mm} haplotype $h_i$ in the population; $a$ is the number of alleles considered, $R$ and $R_s$ denote the set of all reads, and reads from sample $s$ respectively, and the sum over haplotypes extends over all ordered pairs $(i,j)$, i.e. genotypes.
+Here, $f_i$ denotes the frequency of \hspace{0.05mm} haplotype $h_i$ in the population; $a$ is the number of alleles considered, $R$ and $R_s$ denote the set of all reads, and reads from sample $s$ respectively, and the sum over haplotypes extends over all ordered pairs $(i,j)$, i.e.\ genotypes.
 
 Finally, we break up called haplotypes into their constituent variants and calculate variant-specific genotype calls and likelihoods by marginalizing over the other variants in the region.
 \begin{equation}
