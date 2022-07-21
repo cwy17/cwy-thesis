@@ -42,7 +42,11 @@ Next-Generation Sequencing (NGS) is an indispensable technology for Precision Me
 
 Since the human genome reference sequences we compare are usually linear and contain only single sequences, the diversity of the human genome cannot be captured. However, read sequences may contain individual variation, so during the mapping process, read sequences may be mapped to the wrong position or fail to be mapped because of the difference in height between read sequences and reference sequences, a phenomenon we called reference bias. Incorrect read sequence mapping can lead to false-negative or false-positive variant identification, which affects the accuracy of identifying genomic variants. To solve this problem, we added new Hypothetical Sequences and read index structures to improve the genomic reference sequences to include genomic diversity, and the results showed that they are effective in reducing the impact of reference sequences.
 
-Due to the previous study focused on evaluating the impact of the new method on reducing reference bias, we did not verify and assess the actual application. Therefore, in this study, we will evaluate and investigate the efficacy of NA12878 using exome sequencing set and whole genome sequencing set for real data, and use common variant detection tools to assist the experiment.\\ \hspace{3mm} In conclusion, based on the results of this study, we speculate that some variation in the benchmark data may be missing, and we have generally ruled out the possibility of evaluation errors in the new version of EAGLE through a simple validation, thus, it can be shown that EAGLE has the ability to detect missing benchmark data. Since we have only verified the results of the study in a simple way, this speculation needs to be verified and explained in a more critical way in the future.
+Due to the previous study focused on evaluating the impact of the new method on reducing reference bias, we did not verify and assess the actual application. Therefore, in this study, we will evaluate and investigate the efficacy of NA12878 using exome sequencing set and whole genome sequencing set for real data, and use common variant detection tools to assist the experiment.
+
+To the experimental results, when we evaluated the performance of the new version of EAGLE using the precision and recall curves, we found that the precision of the new version of EAGLE had a degradation problem occurring on the same recall level. Therefore, we extracted the variants of EAGLE that gave a higher marginal probibility and examined their mapping situation in order to find out the cause of the problem. However, in order to ensure that not new versions of EAGLE have the possibility of evaluation errors, we also perform a follow-up check on the cases where errors may occur.
+
+In conclusion, based on the results of this study, it is assumed that there may be some missing variation in the benchmark data, and the possibility of evaluation errors in the new version of EAGLE can be largely excluded by subsequent validation. Therefore, it can be stated that EAGLE has the ability to detect missing benchmark data. Since we have only conducted follow-up tests on a small number of cases where the results of the study had a significant impact, this speculation needs to be verified and explained in a more rigorous manner in the future.
 }
 
 
@@ -54,11 +58,28 @@ Due to the previous study focused on evaluating the impact of the new method on 
 
 然而先前研究著重在於評估新方法對於降低參考偏差帶來的影響，並無對於實際應用情況進行驗證及評估。所以在本次研究中，我們將對NA12878的真實資料分別使用外顯子測序集及全基因組測序集進行效能的評估及探討，並使用常見的變異偵測工具來協助實驗的進行。
 
-總言之，根據這次的研究結果，我們推測變異的基準資料可能有缺失某部分變異的情況發生，並且我們經由簡易的驗證，大致排除新版本EAGLE發生評估錯誤的可能性，因此可以說明EAGLE具備發現基準資料缺失的能力。 由於我們僅對於研究成果進行簡單的驗證，此推測仍需在日後用更嚴謹的方式進行驗證與解釋。
+對於實驗結果而言，在我們使用精準度與召回率曲線來評估新版本EAGLE的表現時，發現在同樣的召回率中，新版本EAGLE的精準度有下降的問題發生。因此，我們擷取EAGLE給予邊際機率較高的變異，並檢查它們的映射情形，期望找出問題發生的原因。然而為了確保並非新版本的EAGLE有評估錯誤的可能性，我們也對於可能發生錯誤的情形進行後續的檢驗。
+
+總言之，根據這次的研究結果，我們推測基準資料可能有缺失某部分變異的情況發生，並且經由後續的驗證，可以大致排除新版本EAGLE發生評估錯誤的可能性。因此，可以說明EAGLE具備發現基準資料缺失的能力。由於我們僅對於研究結果影響較大的小部分案例，進行後續的檢驗，所以此推測仍需在日後用更嚴謹的方式進行驗證與解釋。
 }
 
 \newcommand*\Acknowledgements{%
-感謝我...}
+本篇論文能順利完成，首先我想感謝我的指導老師賀保羅教授，很榮幸能成為老師的學生，感謝老師在我攻讀碩士的這兩年間，不厭其煩地指導我，感謝你總在我緊張時給予鼓勵，在我需要時給予幫助，並且讓我了解進行研究該秉持的態度。也感謝口試委員劉宗霖教授及王士豪教授在生物資訊與論文的撰寫上給予我許多建議，令我受益良多。
+
+在實驗室的這兩年，特別感謝的是同屆的宥霖、力元、恆霖、芊瑀，謝謝你們讓我在成大的日子並不孤單，從資料探勘到巨量生物資料分析，從第一次吃冰仔角到最後熬夜趕論文，從咆嘯深淵到召喚峽谷，從逐鹿到涮乃葉，從保齡球到滑輪場，從健身房到籃球場，從傷心難過到開懷大笑，一起經歷過的每件事，多到數不完的各種回憶，這些過程都有你們的陪伴。
+
+接下來想感謝實驗室的學長姐們，感謝文弘分享許多研究上的經驗、想法與資源，也給予我許多幫助。感謝綾娟總是傾聽我的煩惱，給予我許多生活與課業上的建議。感謝喚凱在許多方面不吝分享他的看法與他的美食指南霸主小妞炒飯。感謝國勳的湯湯食與他帶給我的歡笑，有他的碩一生活一點都不無趣，感謝士杰總是分享很酷很有趣的知識給大家，也不吝給予我各種幫助。
+
+也想謝謝實驗室的學弟妹昱伶、益宗、筱萱、海墨、怡靜、中柏，謝謝你們讓我的碩二生活變得熱鬧許多，一起修習的軟體設計，一起聊過的大小事，一起度過的這一年，還有你們給予我的幫助，一定會讓我在日後憶起我的碩士生活有更多的笑容與懷念，這篇論文能順利完成感謝生醫暨語言資訊實驗室大家的協助。
+
+還想特別感謝容尹，在我對於論文的撰寫上遇到瓶頸與困難時，給予我很大的幫助與鼓勵，謝謝你無條件的付出與包容，讓我能順利完成此篇論文。最後也感謝我的家人無條件的支持我完成學業，在我灰心時給予最暖心的鼓勵，讓我能在求學之路上無後顧之憂，全心全意的精進向上，成就更好的自己。
+
+最後，將此論文獻給我摯愛的家人，並再次感謝這一路上幫助過我的所有人，誠摯的祝福你們身體健康，一路順風。
+\\
+\begin{flushright}
+陳威穎 \! 謹誌於\\國立成功大學\\中華民國111年7月
+\end{flushright}
+}
 
 
 

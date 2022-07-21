@@ -35,7 +35,7 @@
 \RequirePackage[hyperref=true]{biblatex}
 \else
 \RequirePackage[draft,hyperfootnotes=false]{hyperref}
-\RequirePackage[hyperref=false]{biblatex}
+\RequirePackage[hyperref=false,sorting=none]{biblatex}
 \fi
 
 \renewbibmacro{in:}{}
